@@ -18,8 +18,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "MYLEDBAR.h"
-#include "stm32l4xx.h"
+#include "usart.h"
+#include "gpio.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
@@ -42,16 +43,13 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-char UART_buf[51];
+char UART_buf[512];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
-static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -91,12 +89,10 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  UART_buf[0]=27;//ESC
-  sprintf(&UART_buf[1],"[2J");
-  HAL_UART_Transmit(&huart2,(unsigned char*)UART_buf,strlen(UART_buf),1);
-
-  sprintf(UART_buf,">>L476>>READY:\n");
-  HAL_UART_Transmit(&huart2,(unsigned char*)UART_buf,strlen(UART_buf),1);
+  sprintf(UART_buf,"\r\n***************************************************\r\n"
+		  "Code by Sedrenn et Adrien on NUCLEO-L476 >> READY:\r\n"
+		  "***************************************************\r\n");
+  HAL_UART_Transmit(&huart2,(uint8_t*)UART_buf,strlen(UART_buf),20);
 //  UART_buf[0]=27;//ESC
 //  sprintf(&UART_buf[1],"[2J");
 //  HAL_UART_Transmit(&huart2,(unsigned char*)UART_buf,strlen(UART_buf),1);
@@ -105,17 +101,16 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  int i=4;
-  UART_buf[0]=0x0D;//CR
-  UART_buf[1]=0;//end of buf
-  HAL_UART_Transmit(&huart2,(unsigned char*)UART_buf,strlen(UART_buf),1);
 
-  sprintf(UART_buf,"LED CONFIG DONE !",i);
-  HAL_UART_Transmit(&huart2,(unsigned char*)UART_buf,strlen(UART_buf),1);
+  sprintf(UART_buf,"LED CONFIG DONE !",4);
+  HAL_UART_Transmit(&huart2,(unsigned char*)UART_buf,strlen(UART_buf),10);
 
   while (1)
   {
-
+	//  MYLEDBAR_SendLEDs();
+	  HAL_Delay(100);
+	  HAL_GPIO_TogglePin(DI_GPIO_Port, DI_Pin);
+	  HAL_GPIO_TogglePin(DCKI_GPIO_Port, DCKI_Pin);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -170,61 +165,6 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-}
-
-/**
-  * @brief USART2 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USART2_UART_Init(void)
-{
-
-  /* USER CODE BEGIN USART2_Init 0 */
-
-  /* USER CODE END USART2_Init 0 */
-
-  /* USER CODE BEGIN USART2_Init 1 */
-
-  /* USER CODE END USART2_Init 1 */
-  huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
-  huart2.Init.WordLength = UART_WORDLENGTH_8B;
-  huart2.Init.StopBits = UART_STOPBITS_1;
-  huart2.Init.Parity = UART_PARITY_NONE;
-  huart2.Init.Mode = UART_MODE_TX_RX;
-  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_UART_Init(&huart2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART2_Init 2 */
-
-  /* USER CODE END USART2_Init 2 */
-
-}
-
-/**
-  * @brief GPIO Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_GPIO_Init(void)
-{
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
-
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOH_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
-
-/* USER CODE BEGIN MX_GPIO_Init_2 */
-/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */

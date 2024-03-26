@@ -8,6 +8,7 @@
 #ifndef INC_MYLEDBAR_H_
 #define INC_MYLEDBAR_H_
 
+#define sysTickInuS 80
 
 void MYLEDBAR_Init() ;
 

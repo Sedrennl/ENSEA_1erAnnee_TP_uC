@@ -60,8 +60,8 @@ all: main-build
 main-build: 2024_TP1A_L476_IO_v01.elf secondary-outputs
 
 # Tool invocations
-2024_TP1A_L476_IO_v01.elf 2024_TP1A_L476_IO_v01.map: $(OBJS) $(USER_OBJS) C:\Users\sedre\OneDrive\Documents\ENSEA\S6\microprocesseur\2024_TP1A_L476_IO_v01\2024_TP1A_L476_IO_v01\2024_TP1A_L476_IO_v01\STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "2024_TP1A_L476_IO_v01.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\sedre\OneDrive\Documents\ENSEA\S6\microprocesseur\2024_TP1A_L476_IO_v01\2024_TP1A_L476_IO_v01\2024_TP1A_L476_IO_v01\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="2024_TP1A_L476_IO_v01.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+2024_TP1A_L476_IO_v01.elf 2024_TP1A_L476_IO_v01.map: $(OBJS) $(USER_OBJS) /home/nicolas/git/ENSEA_1erAnnee_TP_uC/2024_TP1A_L476_IO_v01/STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "2024_TP1A_L476_IO_v01.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/nicolas/git/ENSEA_1erAnnee_TP_uC/2024_TP1A_L476_IO_v01/STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="2024_TP1A_L476_IO_v01.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
